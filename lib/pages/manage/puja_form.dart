@@ -88,12 +88,15 @@ class _PujaFormState extends State<PujaForm> {
             }
           ])
         }).whenComplete(() {
-          Map<String, List<String>> samList = {};
+          Map<String, List<Map<String, String>>> samList = {};
 
           for (int i = 0; i < states.length; i++) {
-            List<String> values = [];
+            List<Map<String, String>> values = [];
             for (int j = 0; j < selectedSamagri[i].length; j++) {
-              values.add(sId[selectedSamagri[i][j]]);
+              values.add({
+                "id": sId[selectedSamagri[i][j]],
+                "quantity": "${quantityList["${sId[selectedSamagri[i][j]]}"]}",
+              });
             }
             samList.addAll({"${states[i]}": values});
           }
