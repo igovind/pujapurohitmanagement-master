@@ -52,6 +52,7 @@ class _PujaFormState extends State<PujaForm> {
   bool inProcess = false;
   bool loading = false;
   File? userCoverPicFile;
+  Map<String, String> quantityList = {};
   final _iFormKey = GlobalKey<FormState>();
   String idA =
       "PJID${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}${DateTime.now().hour}${DateTime.now().minute}${DateTime.now().second}";
@@ -123,12 +124,15 @@ class _PujaFormState extends State<PujaForm> {
           });
         }).whenComplete(() => Navigator.of(context).pop());
       } else {
-        Map<String, List<String>> samList = {};
+        Map<String, List<Map<String, String>>> samList = {};
 
         for (int i = 0; i < states.length; i++) {
-          List<String> values = [];
+          List<Map<String, String>> values = [];
           for (int j = 0; j < selectedSamagri[i].length; j++) {
-            values.add(sId[selectedSamagri[i][j]]);
+            values.add({
+              "id": sId[selectedSamagri[i][j]],
+              "quantity": "${quantityList["${sId[selectedSamagri[i][j]]}"]}",
+            });
           }
           samList.addAll({"${states[i]}": values});
         }
@@ -393,7 +397,7 @@ class _PujaFormState extends State<PujaForm> {
                             PickedFile? image = await ImagePicker.platform
                                 .pickImage(source: ImageSource.gallery);
                             if (image != null) {
-                              *//*    File? cropped = await ImageCropper.cropImage(
+                              */ /*    File? cropped = await ImageCropper.cropImage(
                               sourcePath: image.path,
                               aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 2),
                               compressQuality: 100,
@@ -401,20 +405,20 @@ class _PujaFormState extends State<PujaForm> {
                               maxHeight: 700,
                               compressFormat: ImageCompressFormat.jpg,
                             );
-*//*
+*/ /*
                               this.setState(() {
                                 userCoverPicFile = File(image.path);
                                 inProcess = false;
                               });
                               print("New Storage Image: $userCoverPicFile");
-                              *//*Reference reference = FirebaseStorage.instance
+                              */ /*Reference reference = FirebaseStorage.instance
                                   .ref()
                                   .child('listed_puja/pic');
                               UploadTask uploadTask = reference.putFile(userCoverPicFile!);
                               var downloadUrl = await (await uploadTask).ref.getDownloadURL();
                               var url = downloadUrl.toString();
                               _image = url;
-                              print("Image: $_image");*//*
+                              print("Image: $_image");*/ /*
 
                             } else {
                               this.setState(() {
@@ -749,17 +753,44 @@ class _PujaFormState extends State<PujaForm> {
                             items.add(DropdownMenuItem(
                               value: "${list[i]["name"][0]}",
                               child: ListTile(
-                                title: Text(
-                                  "${list[i]["name"][0]}",
-                                ),
-                                leading: Image.network("${list[i]["image"]}"),
-                                subtitle: Text(
-                                  "${list[i]["sid"]}",
-                                  style: TextStyle(
-                                      color: Colors.deepOrangeAccent,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
+                                  title: Text(
+                                    "${list[i]["name"][0]}",
+                                  ),
+                                  leading: Image.network("${list[i]["image"]}"),
+                                  subtitle: Column(
+                                    children: [
+                                      Text(
+                                        "${list[i]["sid"]}",
+                                        style: TextStyle(
+                                            color: Colors.deepOrangeAccent,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.black,
+                                                width: 2,
+                                                style: BorderStyle.solid)),
+                                        child: TextFormField(
+                                          initialValue:
+                                              quantityList["${list[i]["sid"]}"],
+                                          decoration: InputDecoration(
+                                              labelText: "Quantity"),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              quantityList.addAll({
+                                                "${list[i]["sid"]}": "$value"
+                                              });
+                                            });
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  )),
                               //value: ,
                             ));
                           }
