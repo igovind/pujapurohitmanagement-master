@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pujapurohitmanagement/pages/manage/custom_searchable_dropdown.dart';
+import 'package:pujapurohitmanagement/pages/manage/samagri_form.dart';
 
 class PujaForm extends StatefulWidget {
   final List<String>? name;
@@ -43,8 +49,12 @@ class _PujaFormState extends State<PujaForm> {
   String? _duration;
   int samagriCount = 1;
   List<dynamic> sId = [];
+  bool inProcess = false;
+  bool loading = false;
+  File? userCoverPicFile;
   final _iFormKey = GlobalKey<FormState>();
-
+  String idA =
+      "PJID${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}${DateTime.now().hour}${DateTime.now().minute}${DateTime.now().second}";
   Map<String, List<String>> samagriK = {};
   List<List<int>> selectedSamagri = List.generate(100, (index) => []);
   List<dynamic> states = [];
@@ -135,8 +145,7 @@ class _PujaFormState extends State<PujaForm> {
                 _descriptionL
               ],
               "image": _image,
-              "pjid":
-                  "PJID${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}${DateTime.now().hour}${DateTime.now().minute}${DateTime.now().second}",
+              "pjid": idA,
               "avgDuration": _duration,
               "samagri": samList
             }
@@ -373,6 +382,83 @@ class _PujaFormState extends State<PujaForm> {
                   SizedBox(
                     height: 50,
                   ),
+                  /*Row(
+                    children: [
+                      TextButton(
+                          onPressed: () async {
+                            this.setState(() {
+                              inProcess = true;
+                            });
+                            // ignore: invalid_use_of_visible_for_testing_member
+                            PickedFile? image = await ImagePicker.platform
+                                .pickImage(source: ImageSource.gallery);
+                            if (image != null) {
+                              *//*    File? cropped = await ImageCropper.cropImage(
+                              sourcePath: image.path,
+                              aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 2),
+                              compressQuality: 100,
+                              maxWidth: 700,
+                              maxHeight: 700,
+                              compressFormat: ImageCompressFormat.jpg,
+                            );
+*//*
+                              this.setState(() {
+                                userCoverPicFile = File(image.path);
+                                inProcess = false;
+                              });
+                              print("New Storage Image: $userCoverPicFile");
+                              *//*Reference reference = FirebaseStorage.instance
+                                  .ref()
+                                  .child('listed_puja/pic');
+                              UploadTask uploadTask = reference.putFile(userCoverPicFile!);
+                              var downloadUrl = await (await uploadTask).ref.getDownloadURL();
+                              var url = downloadUrl.toString();
+                              _image = url;
+                              print("Image: $_image");*//*
+
+                            } else {
+                              this.setState(() {
+                                inProcess = false;
+                              });
+                            }
+                          },
+                          child: Container(
+                              color: Colors.green,
+                              padding: EdgeInsets.all(16),
+                              child: Text(
+                                "Select Image",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ))),
+                      TextButton(
+                          onPressed: () async {
+                            print("QWEEIENIN");
+                            Reference reference = FirebaseStorage.instance
+                                .ref()
+                                .child('listed_puja/$idA');
+                            UploadTask uploadTask =
+                                reference.putFile(userCoverPicFile!);
+                            var downloadUrl =
+                                await (await uploadTask).ref.getDownloadURL();
+                            var url = downloadUrl.toString();
+                            _image = url;
+                            print("Image: $_image");
+                          },
+                          child: Container(
+                              color: Colors.yellow,
+                              padding: EdgeInsets.all(16),
+                              child: Text(
+                                "Upload Image",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ))),
+                    ],
+                  ),*/
+                  SizedBox(
+                    height: 50,
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.7,
                     padding: EdgeInsets.all(16),
@@ -433,6 +519,7 @@ class _PujaFormState extends State<PujaForm> {
                   SizedBox(
                     height: 50,
                   ),
+
                   /* widget.edit!
                       ? Container(
                           width: MediaQuery.of(context).size.width * 0.7,
@@ -766,6 +853,29 @@ class _PujaFormState extends State<PujaForm> {
                               });
                         }),
                   ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  TextButton(
+                      onPressed: () =>
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => SamagriForm(
+                                    edit: false,
+                                    description: ["", "", "", "", ""],
+                                    name: ["", "", "", "", ""],
+                                    image: "",
+                                    priceList: {},
+                                    sid: "",
+                                  ))),
+                      child: Container(
+                          color: Colors.green,
+                          padding: EdgeInsets.all(16),
+                          child: Text(
+                            "Add Not Listed Samagri",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )))
                 ],
               ),
             ),
