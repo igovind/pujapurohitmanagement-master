@@ -8,6 +8,9 @@ class SamagriForm extends StatefulWidget {
   final String? image;
   final bool? edit;
   final String? sid;
+  final String? avgPrice;
+  final String? commission;
+  final bool? nonPurchasable;
   final Map<String, dynamic>? priceList;
 
   const SamagriForm(
@@ -18,7 +21,10 @@ class SamagriForm extends StatefulWidget {
       this.image,
       this.edit,
       this.sid,
-      this.priceList})
+      this.priceList,
+      this.avgPrice,
+      this.commission,
+      this.nonPurchasable})
       : super(key: key);
 
   @override
@@ -31,11 +37,14 @@ class _SamagriFormState extends State<SamagriForm> {
   String? _nameB;
   String? _nameT;
   String? _nameL;
+  String? _avgPrice;
+  String? _commission;
   String? _descriptionH;
   String? _descriptionE;
   String? _descriptionB;
   String? _descriptionT;
   String? _descriptionL;
+  bool? _nonPurchasable=false;
 
   final _kFormKey = GlobalKey<FormState>();
   String? _image;
@@ -70,9 +79,12 @@ class _SamagriFormState extends State<SamagriForm> {
                 widget.description![3],
                 widget.description![4]
               ],
+              "commission": widget.commission,
+              "avg_price": widget.avgPrice,
               "sid": widget.sid,
               "image": widget.image,
               "price": widget.priceList,
+              "np": widget.nonPurchasable,
             }
           ])
         }).whenComplete(() {
@@ -88,7 +100,10 @@ class _SamagriFormState extends State<SamagriForm> {
                   _descriptionL
                 ],
                 "sid": widget.sid,
+                "avg_price": _avgPrice,
+                "commission": _commission,
                 "image": _image,
+                "np": _nonPurchasable,
                 "price": widget.priceList,
               }
             ])
@@ -109,6 +124,9 @@ class _SamagriFormState extends State<SamagriForm> {
               "sid":
                   "SID${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}${DateTime.now().hour}${DateTime.now().minute}${DateTime.now().second}",
               "image": _image,
+              "avg_price": _avgPrice,
+              "commission": _commission,
+              "np": _nonPurchasable,
               "price": list,
             }
           ])
@@ -119,6 +137,7 @@ class _SamagriFormState extends State<SamagriForm> {
 
   @override
   Widget build(BuildContext context) {
+    //_nonPurchasable = widget.nonPurchasable;
     return StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.doc("inventories/state").snapshots(),
         builder: (context, snapshot) {
@@ -434,6 +453,102 @@ class _SamagriFormState extends State<SamagriForm> {
                                 });
                               },
                             ),
+                          ],
+                        ),
+                      ),
+                      space,
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(color: Colors.black54, blurRadius: 4)
+                            ]),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Average price",
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                            TextFormField(
+                              validator: (value) => value!.isNotEmpty
+                                  ? null
+                                  : "Huh Fill this idiot",
+                              initialValue: widget.avgPrice,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              decoration: InputDecoration(
+                                labelText: "price",
+                                border: InputBorder.none,
+                              ),
+                              onSaved: (value) {
+                                setState(() {
+                                  _avgPrice = value!;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      space,
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(color: Colors.black54, blurRadius: 4)
+                            ]),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Commission",
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                            TextFormField(
+                              validator: (value) => value!.isNotEmpty
+                                  ? null
+                                  : "Huh Fill this idiot",
+                              initialValue: widget.commission,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              decoration: InputDecoration(
+                                labelText: "price",
+                                border: InputBorder.none,
+                              ),
+                              onSaved: (value) {
+                                setState(() {
+                                  _commission = value!;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      space,
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(color: Colors.black54, blurRadius: 4)
+                            ]),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Not Purchasable?",
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                            Checkbox(
+                              value: _nonPurchasable,
+                              onChanged: (value) {
+                                setState(() {
+                                  _nonPurchasable = !_nonPurchasable!;
+                                });
+                              },
+                            )
                           ],
                         ),
                       ),

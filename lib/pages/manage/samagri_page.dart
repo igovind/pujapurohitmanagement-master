@@ -16,7 +16,10 @@ class SamagriPage extends StatelessWidget {
                     description: ["", "", "", "", ""],
                     name: ["", "", "", "", ""],
                     image: "",
+                    avgPrice: "",
                     priceList: {},
+                    commission: "",
+                    nonPurchasable: false,
                     sid: "",
                   )));
         },
@@ -48,7 +51,10 @@ class SamagriPage extends StatelessWidget {
             List<dynamic> descriptionB = [];
             List<dynamic> descriptionT = [];
             List<dynamic> descriptionL = [];
+            List<dynamic> avgPrice = [];
+            List<dynamic> commission = [];
             List<dynamic> sId = [];
+            List<dynamic> np = [];
             Map<String, dynamic> priceList = {};
             for (int i = 0; i < list.length; i++) {
               nameE.add(list[i]["name"][0]);
@@ -62,8 +68,11 @@ class SamagriPage extends StatelessWidget {
               descriptionB.add(list[i]["description"][2]);
               descriptionT.add(list[i]["description"][3]);
               descriptionL.add(list[i]["description"][4]);
+              avgPrice.add(list[i]["avg_price"]);
               priceList.addAll(list[i]["price"]);
+              commission.add(list[i]["commission"]);
               sId.add(list[i]["sid"]);
+              np.add(list[i]["np"]);
             }
             print("${list[0]["name"][0]} MMMMM $priceList");
             return Center(
@@ -102,6 +111,7 @@ class SamagriPage extends StatelessWidget {
                                         nameT[index],
                                         nameL[index],
                                       ],
+                                      nonPurchasable: np[index],
                                       description: [
                                         descriptionE[index],
                                         descriptionH[index],
@@ -109,38 +119,14 @@ class SamagriPage extends StatelessWidget {
                                         descriptionT[index],
                                         descriptionL[index],
                                       ],
+                                      commission: commission[index],
+                                      avgPrice: avgPrice[index],
                                       edit: true,
                                       image: image[index],
                                       priceList: priceList,
                                       sid: sId[index],
                                     )));
                           },
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            color: Colors.deepOrange,
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        title: Text("Pakka? Kardu delete??"),
-                                        actions: [
-                                          TextButton(
-                                            child: Text("Karde"),
-                                            onPressed: () {
-                                              FirebaseFirestore.instance
-                                                  .doc(
-                                                      "inventories/listed_samagri")
-                                                  .update({
-                                                "samagri":
-                                                    FieldValue.arrayRemove(
-                                                        list[index])
-                                              });
-                                            },
-                                          )
-                                        ],
-                                      ));
-                            },
-                          ),
                         ),
                     separatorBuilder: (context, index) => Divider(
                           height: 1,

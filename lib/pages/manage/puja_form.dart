@@ -49,6 +49,10 @@ class _PujaFormState extends State<PujaForm> {
   String? _duration;
   int samagriCount = 1;
   List<dynamic> sId = [];
+  List<List<int>> newList = [];
+
+  List<List<int>> newListB = [];
+
   bool inProcess = false;
   bool loading = false;
   File? userCoverPicFile;
@@ -100,7 +104,8 @@ class _PujaFormState extends State<PujaForm> {
             }
             samList.addAll({"${states[i]}": values});
           }
-          print("Hamsafar $samList");
+          print(
+              "\n\n\n\n\n\n\n\nYUYUYUYUYUYUYUY $samList+++++++++++++++++\n\n ${widget.priceList}");
           FirebaseFirestore.instance.doc("inventories/listed_puja").update({
             "listed_puja": FieldValue.arrayUnion([
               {
@@ -121,7 +126,9 @@ class _PujaFormState extends State<PujaForm> {
                 "image": _image,
                 "pjid": widget.sid,
                 "avgDuration": _duration,
-                "samagri": samList,
+                "samagri": samList["Andhra Pradesh"]!.isEmpty
+                    ? widget.priceList
+                    : samList,
               }
             ])
           });
@@ -188,7 +195,6 @@ class _PujaFormState extends State<PujaForm> {
                                         TextButton(
                                           child: Text("Karde"),
                                           onPressed: () {
-                                            Navigator.of(context).pop();
                                             FirebaseFirestore.instance
                                                 .doc("inventories/listed_puja")
                                                 .update({
@@ -217,6 +223,8 @@ class _PujaFormState extends State<PujaForm> {
                                                 }
                                               ])
                                             });
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
                                           },
                                         )
                                       ],
@@ -526,184 +534,135 @@ class _PujaFormState extends State<PujaForm> {
                   SizedBox(
                     height: 50,
                   ),
-
-                  /* widget.edit!
-                      ? Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          height: MediaQuery.of(context).size.height * 0.4,
-                          padding: EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(color: Colors.black54, blurRadius: 4)
-                              ]),
-                          child: StreamBuilder<DocumentSnapshot>(
-                              stream: FirebaseFirestore.instance
-                                  .doc("inventories/listed_samagri")
-                                  .snapshots(),
-                              builder: (context, snapshotK) {
-                                if (snapshotK.data == null) {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                                List<dynamic> list =
-                                    snapshotK.data!.get("samagri");
-                                if (list.isEmpty) {
-                                  return Center(child: Text("Kahli hai"));
-                                }
-                                List<dynamic> nameE = [];
-                                List<dynamic> nameH = [];
-                                List<dynamic> nameB = [];
-                                List<dynamic> nameT = [];
-                                List<dynamic> nameL = [];
-                                List<dynamic> image = [];
-                                List<dynamic> descriptionE = [];
-                                List<dynamic> descriptionH = [];
-                                List<dynamic> descriptionB = [];
-                                List<dynamic> descriptionT = [];
-                                List<dynamic> descriptionL = [];
-
-                                List<DropdownMenuItem> items = [];
-                                Map<String, dynamic> priceList = {};
-                                for (int i = 0; i < list.length; i++) {
-                                  nameE.add(list[i]["name"][0]);
-                                  nameH.add(list[i]["name"][1]);
-                                  nameB.add(list[i]["name"][2]);
-                                  nameT.add(list[i]["name"][3]);
-                                  nameL.add(list[i]["name"][4]);
-                                  image.add(list[i]["image"]);
-                                  descriptionE.add(list[i]["description"][0]);
-                                  descriptionH.add(list[i]["description"][1]);
-                                  descriptionB.add(list[i]["description"][2]);
-                                  descriptionT.add(list[i]["description"][3]);
-                                  descriptionL.add(list[i]["description"][4]);
-                                  priceList.addAll(list[i]["price"]);
-                                  sId.add(list[i]["sid"]);
-                                  items.add(DropdownMenuItem(
-                                    value: "${list[i]["name"][0]}",
-                                    child: ListTile(
-                                      title: Text(
-                                        "${list[i]["name"][0]}",
-                                      ),
-                                      leading:
-                                          Image.network("${list[i]["image"]}"),
-                                      subtitle: Text(
-                                        "${list[i]["sid"]}",
-                                        style: TextStyle(
-                                            color: Colors.deepOrangeAccent,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    //value: ,
-                                  ));
-                                }
-                                */ /*for(int k=0;k<states.length;k++){
-                                  for(int j=0;j<sId.length;j++){
-                                    int pos=sId.contains(widget.priceList[]);
-                                    selectedSamagri[k][]
-                                  }
-
-                                }*/ /*
-                                return StreamBuilder<DocumentSnapshot>(
+                  !widget.edit!
+                      ? SizedBox()
+                      : StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .doc("inventories/listed_samagri")
+                              .snapshots(),
+                          builder: (context, snapshotK) {
+                            if (snapshotK.data == null) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            List<dynamic> list = snapshotK.data!.get("samagri");
+                            if (list.isEmpty) {
+                              return Center(child: Text("Kahli hai"));
+                            }
+                            List<dynamic> nameE = [];
+                            List<dynamic> imageP = [];
+                            //List<dynamic>  = [];
+                            for (int i = 0; i < list.length; i++) {
+                              nameE.add(list[i]["name"][0]);
+                              imageP.add(list[i]["image"]);
+                              sId.add(list[i]["sid"]);
+                            }
+                            print("############$sId $nameE");
+                            return Container(
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black54, blurRadius: 4)
+                                    ]),
+                                child: StreamBuilder<DocumentSnapshot>(
                                     stream: FirebaseFirestore.instance
                                         .doc("inventories/state")
                                         .snapshots(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.data == null) {
+                                    builder: (context, snapshotS) {
+                                      if (snapshotS.data == null) {
                                         return Center(
                                           child: CircularProgressIndicator(),
                                         );
                                       }
-                                      states = snapshot.data!.get("states");
-
+                                      List<dynamic> sta =
+                                          snapshotS.data!.get("states");
                                       return ListView.separated(
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.4,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.black,
-                                                      style: BorderStyle.solid,
-                                                      width: 2)),
-                                              child: Column(
-                                                children: [
-                                                  Text("${states[index]}"),
-                                                  Container(
-                                                    height:
-                                                        MediaQuery.of(context)
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, indexA) {
+                                            List<dynamic> listSA = widget
+                                                .priceList!["${sta[indexA]}"];
+                                            return Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.4,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.black,
+                                                        style:
+                                                            BorderStyle.solid,
+                                                        width: 2)),
+                                                child: Column(
+                                                  children: [
+                                                    Text("${sta[indexA]}"),
+                                                    Container(
+                                                        height: MediaQuery.of(
+                                                                    context)
                                                                 .size
                                                                 .height *
                                                             0.30,
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: SearchChoices
-                                                          .multiple(
-                                                        icon: Icon(
-                                                          Icons
-                                                              .arrow_drop_down_circle_outlined,
-                                                          color: Colors
-                                                              .deepOrangeAccent,
-                                                        ),
-                                                        underline: SizedBox(),
-                                                        label: "Select Samagri",
-                                                        items: items,
-                                                        isExpanded: true,
-                                                        displayClearIcon: false,
-                                                        onChanged: (value) {
-                                                          if (index == 0) {
-                                                            setState(() {
-                                                              for (int k = 0;
-                                                                  k < 100;
-                                                                  k++) {
-                                                                selectedSamagri[
-                                                                    k] = value;
-                                                              }
-                                                            });
-                                                          } else {
-                                                            setState(() {
-                                                              selectedSamagri[
-                                                                      index] =
-                                                                  value;
-                                                            });
-                                                          }
-                                                          print(
-                                                              "${selectedSamagri[0]}");
-                                                        },
-                                                        closeButton:
-                                                            (selectedItems) {
-                                                          return (selectedItems
-                                                                  .isNotEmpty
-                                                              ? "Save ${selectedItems.length == 1 ? '"' + items[selectedItems.first].value.toString() + '"' : '(' + selectedItems.length.toString() + ')'}"
-                                                              : "Save without selection");
-                                                        },
-                                                        selectedItems:
-                                                            selectedSamagri[
-                                                                index],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ));
-                                        },
-                                        separatorBuilder: (context, index) =>
-                                            SizedBox(
-                                          width: 10,
-                                        ),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: states.length,
-                                      );
-                                    });
-                              }),
-                        )
-                      :*/
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          child: Container(
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.4,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.4,
+                                                            child: ListView
+                                                                .separated(
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      return ListTile(
+                                                                          leading: Image.network(imageP[sId.indexOf(
+                                                                              "${listSA[index]["id"]}")]),
+                                                                          title: Text(
+                                                                              "${nameE[sId.indexOf("${listSA[index]["id"]}")]}"),
+                                                                          subtitle:
+                                                                              Column(
+                                                                            children: [
+                                                                              Text("ID ${listSA[index]["id"]}"),
+                                                                              Text("Quantity ${listSA[index]["quantity"]}"),
+                                                                            ],
+                                                                          ));
+                                                                    },
+                                                                    separatorBuilder:
+                                                                        (context,
+                                                                                index) =>
+                                                                            SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                    itemCount:
+                                                                        listSA
+                                                                            .length),
+                                                          ),
+                                                        )),
+                                                  ],
+                                                ));
+                                          },
+                                          separatorBuilder: (context, indexA) =>
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                          itemCount: sta.length);
+                                    }));
+                          }),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.7,
                     height: MediaQuery.of(context).size.height * 0.4,

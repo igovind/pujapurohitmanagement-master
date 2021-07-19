@@ -55,6 +55,7 @@ class _AddAndEditPujaState extends State<AddAndEditPuja> {
             List<dynamic> descriptionL = [];
             List<dynamic> sId = [];
             List<dynamic> duration = [];
+
             // List<dynamic> sId = [];
             Map<String, dynamic> priceList = {};
             for (int i = 0; i < list.length; i++) {
@@ -134,13 +135,7 @@ class _AddAndEditPujaState extends State<AddAndEditPuja> {
                                       sid: sId[index],
                                     )));
                           },
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            color: Colors.deepOrange,
-                            onPressed: () {
 
-                            },
-                          ),
                         ),
                     separatorBuilder: (context, index) => Divider(
                           height: 1,
