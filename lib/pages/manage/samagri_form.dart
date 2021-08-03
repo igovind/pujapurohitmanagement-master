@@ -12,6 +12,7 @@ class SamagriForm extends StatefulWidget {
   final String? commission;
   final bool? nonPurchasable;
   final Map<String, dynamic>? priceList;
+  final Map<dynamic, dynamic> mainList;
 
   const SamagriForm(
       {Key? key,
@@ -24,7 +25,8 @@ class SamagriForm extends StatefulWidget {
       this.priceList,
       this.avgPrice,
       this.commission,
-      this.nonPurchasable})
+      this.nonPurchasable,
+      required this.mainList})
       : super(key: key);
 
   @override
@@ -44,7 +46,7 @@ class _SamagriFormState extends State<SamagriForm> {
   String? _descriptionB;
   String? _descriptionT;
   String? _descriptionL;
-  bool? _nonPurchasable=false;
+  bool? _nonPurchasable = false;
 
   final _kFormKey = GlobalKey<FormState>();
   String? _image;
@@ -62,34 +64,13 @@ class _SamagriFormState extends State<SamagriForm> {
 
       // print("$priceValue");
       if (widget.edit!) {
-        FirebaseFirestore.instance.doc("inventories/listed_samagri").update({
-          "samagri": FieldValue.arrayRemove([
-            {
-              "name": [
-                widget.name![0],
-                widget.name![1],
-                widget.name![2],
-                widget.name![3],
-                widget.name![4],
-              ],
-              "description": [
-                widget.description![0],
-                widget.description![1],
-                widget.description![2],
-                widget.description![3],
-                widget.description![4]
-              ],
-              "commission": widget.commission,
-              "avg_price": widget.avgPrice,
-              "sid": widget.sid,
-              "image": widget.image,
-              "price": widget.priceList,
-              "np": widget.nonPurchasable,
-            }
+        FirebaseFirestore.instance.doc("inventories/listed_puja").update({
+          "listed_samagri": FieldValue.arrayRemove([
+            widget.mainList
           ])
         }).whenComplete(() {
-          FirebaseFirestore.instance.doc("inventories/listed_samagri").update({
-            "samagri": FieldValue.arrayUnion([
+          FirebaseFirestore.instance.doc("inventories/listed_puja").update({
+            "listed_samagri": FieldValue.arrayUnion([
               {
                 "name": [_nameE, _nameH, _nameB, _nameT, _nameL],
                 "description": [
@@ -110,8 +91,8 @@ class _SamagriFormState extends State<SamagriForm> {
           });
         }).whenComplete(() => Navigator.of(context).pop());
       } else {
-        FirebaseFirestore.instance.doc("inventories/listed_samagri").update({
-          "samagri": FieldValue.arrayUnion([
+        FirebaseFirestore.instance.doc("inventories/listed_puja").update({
+          "listed_samagri": FieldValue.arrayUnion([
             {
               "name": [_nameE, _nameH, _nameB, _nameT, _nameL],
               "description": [
@@ -173,30 +154,11 @@ class _SamagriFormState extends State<SamagriForm> {
                                               onPressed: () {
                                                 FirebaseFirestore.instance
                                                     .doc(
-                                                        "inventories/listed_samagri")
+                                                        "inventories/listed_puja")
                                                     .update({
-                                                  "samagri":
-                                                      FieldValue.arrayRemove([
-                                                    {
-                                                      "name": [
-                                                        widget.name![0],
-                                                        widget.name![1],
-                                                        widget.name![2],
-                                                        widget.name![3],
-                                                        widget.name![4],
-                                                      ],
-                                                      "description": [
-                                                        widget.description![0],
-                                                        widget.description![1],
-                                                        widget.description![2],
-                                                        widget.description![3],
-                                                        widget.description![4]
-                                                      ],
-                                                      "sid": widget.sid,
-                                                      "image": widget.image,
-                                                      "price": widget.priceList,
-                                                    }
-                                                  ])
+                                                  "listed_samagri":
+                                                      FieldValue.arrayRemove(
+                                                          [widget.mainList])
                                                 }).whenComplete(() =>
                                                         Navigator.of(context)
                                                             .pop());

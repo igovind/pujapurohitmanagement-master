@@ -3,23 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:pujapurohitmanagement/pages/manage/panchang_tile.dart';
 
 class PanchangUpdate extends StatefulWidget {
-  final count;
-  final lang0;
-  final lang1;
-  final lang2;
-  final lang3;
-  final lang4;
-  final date;
+  final Map<dynamic, dynamic> value;
+  final bool edit;
+  final DateTime lastDate;
 
   const PanchangUpdate(
       {Key? key,
-      this.count,
-      this.lang0,
-      this.lang1,
-      this.lang2,
-      this.lang3,
-      this.lang4,
-      this.date})
+      required this.value,
+      required this.edit,
+      required this.lastDate})
       : super(key: key);
 
   @override
@@ -28,46 +20,45 @@ class PanchangUpdate extends StatefulWidget {
 
 class _PanchangUpdateState extends State<PanchangUpdate> {
   final _nFormKey = GlobalKey<FormState>();
+  String? langE;
+  String? langH;
+  String? langB;
+  String? langT;
+  String? langTL;
 
   @override
   Widget build(BuildContext context) {
-    String aLang0 = widget.lang0;
-    String aLang1 = widget.lang0;
-    String aLang2 = widget.lang0;
-    String aLang3 = widget.lang0;
-    String aLang4 = widget.lang0;
-    DateTime aDate = widget.date.toDate();
-    DateTime newDate = DateTime(aDate.year, aDate.month, aDate.day + 1);
     return Scaffold(
-      // appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_nFormKey.currentState!.validate()) {
             _nFormKey.currentState?.save();
-            if (aLang0 == "") {
-              print("NEW FIELD IS GENERATING $aLang0");
+            print("${[langB, langE, langH, langT, langTL]}");
+            if (widget.edit) {
               FirebaseFirestore.instance.doc("inventories/panchang").update({
-                "${widget.count + 1}": {
-                  "date": newDate,
-                  "more": " ",
-                  // "id":"${DateTime.now().}",
-                  "panchang": FieldValue.arrayUnion(
-                      [aLang0, aLang1, aLang2, aLang3, aLang4])
-                },
-                "count": FieldValue.increment(1)
-              }).whenComplete(() => Navigator.of(context).pop());
+                "dailyPanchang": FieldValue.arrayRemove([widget.value])
+              }).whenComplete(() {
+                FirebaseFirestore.instance.doc("inventories/panchang").update({
+                  "dailyPanchang": FieldValue.arrayUnion([
+                    {
+                      "date": widget.value["date"],
+                      "panchang": [langE, langH, langB, langT, langTL]
+                    }
+                  ])
+                });
+              });
             } else {
-              print("FIELD IS UPDATING");
               FirebaseFirestore.instance.doc("inventories/panchang").update({
-                "${widget.count}": {
-                  "date": newDate,
-                  "more": " ",
-                  "panchang": FieldValue.arrayUnion(
-                      [aLang0, aLang1, aLang2, aLang3, aLang4])
-                },
-              }).whenComplete(() => Navigator.of(context).pop());
+                "dailyPanchang": FieldValue.arrayUnion([
+                  {
+                    "date": widget.lastDate.add(Duration(days: 1)),
+                    "panchang": [langE, langH, langB, langT, langTL]
+                  }
+                ])
+              });
             }
           }
+          Navigator.of(context).pop();
         },
         child: Icon(Icons.check),
       ),
@@ -91,7 +82,8 @@ class _PanchangUpdateState extends State<PanchangUpdate> {
                             BoxShadow(color: Colors.black54, blurRadius: 5)
                           ]),
                       child: TextFormField(
-                        initialValue: widget.lang0,
+                        initialValue:
+                            widget.edit ? widget.value["panchang"][0] : "",
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         validator: (value) =>
@@ -100,7 +92,7 @@ class _PanchangUpdateState extends State<PanchangUpdate> {
                           labelText: "English",
                           border: InputBorder.none,
                         ),
-                        onSaved: (value) => aLang0 = value!,
+                        onSaved: (value) => langE = value!,
                       ),
                     ),
                   ),
@@ -119,14 +111,15 @@ class _PanchangUpdateState extends State<PanchangUpdate> {
                       child: TextFormField(
                         validator: (value) =>
                             value!.isNotEmpty ? null : "Huh Fill this idiot",
-                        initialValue: widget.lang1,
+                        initialValue:
+                            widget.edit ? widget.value["panchang"][1] : "",
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         decoration: InputDecoration(
                           labelText: "Hindi",
                           border: InputBorder.none,
                         ),
-                        onSaved: (value) => aLang1 = value!,
+                        onSaved: (value) => langH = value!,
                       ),
                     ),
                   ),
@@ -145,14 +138,15 @@ class _PanchangUpdateState extends State<PanchangUpdate> {
                       child: TextFormField(
                         validator: (value) =>
                             value!.isNotEmpty ? null : "Huh Fill this idiot",
-                        initialValue: widget.lang2,
+                        initialValue:
+                            widget.edit ? widget.value["panchang"][2] : "",
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         decoration: InputDecoration(
                           labelText: "Bengali",
                           border: InputBorder.none,
                         ),
-                        onSaved: (value) => aLang2 = value!,
+                        onSaved: (value) => langB = value!,
                       ),
                     ),
                   ),
@@ -171,14 +165,15 @@ class _PanchangUpdateState extends State<PanchangUpdate> {
                       child: TextFormField(
                         validator: (value) =>
                             value!.isNotEmpty ? null : "Huh Fill this idiot",
-                        initialValue: widget.lang3,
+                        initialValue:
+                            widget.edit ? widget.value["panchang"][3] : "",
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         decoration: InputDecoration(
                           labelText: "Tamil",
                           border: InputBorder.none,
                         ),
-                        onSaved: (value) => aLang3 = value!,
+                        onSaved: (value) => langT = value!,
                       ),
                     ),
                   ),
@@ -197,14 +192,15 @@ class _PanchangUpdateState extends State<PanchangUpdate> {
                       child: TextFormField(
                         validator: (value) =>
                             value!.isNotEmpty ? null : "Huh Fill this idiot",
-                        initialValue: widget.lang4,
+                        initialValue:
+                            widget.edit ? widget.value["panchang"][4] : "",
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         decoration: InputDecoration(
-                          labelText: "Telgu",
+                          labelText: "Telugu",
                           border: InputBorder.none,
                         ),
-                        onSaved: (value) => aLang4 = value!,
+                        onSaved: (value) => langTL = value!,
                       ),
                     ),
                   ),
@@ -228,31 +224,18 @@ class PanchangPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          int count = snapshot.data?.get("count");
-          Map<dynamic, dynamic> data = {}; //snapshot.data?.get("1");
-          Map<dynamic, dynamic> tData;
-          List<List<dynamic>> panchang = [];
-          List<dynamic> dates = [];
-          for (int i = 1; i <= count; i++) {
-            data.addAll(snapshot.data?.get("$i"));
-            tData = snapshot.data?.get("$i");
-            panchang.add(tData["panchang"]);
-            dates.add(tData["date"]);
-          }
-          //  print(panchang);
+          List<dynamic> listOfPanchang = snapshot.data!.get("dailyPanchang");
+          listOfPanchang.sort((a, b) => (b["date"]).compareTo(a["date"]));
+         // print("Last Date: ${lis}")
           return Scaffold(
             appBar: AppBar(),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => PanchangUpdate(
-                          count: count + 1,
-                          date: dates[count - 1],
-                          lang0: "",
-                          lang1: "",
-                          lang2: "",
-                          lang3: "",
-                          lang4: "",
+                          value: {"": ""},
+                          edit: false,
+                          lastDate: listOfPanchang.first["date"].toDate(),
                         )));
               },
               child: Icon(Icons.add),
@@ -265,25 +248,20 @@ class PanchangPage extends StatelessWidget {
                   separatorBuilder: (context, index) => SizedBox(
                         width: 10,
                       ),
-                  itemCount: count,
+                  itemCount: listOfPanchang.length,
                   itemBuilder: (context, index) {
-                    String text = panchang[count - index - 1][1];
                     return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => PanchangUpdate(
-                                  count: count - index - 1,
-                                  date: dates[count - index - 1],
-                                  lang0: panchang[count - index - 1][0],
-                                  lang1: panchang[count - index - 1][1],
-                                  lang2: panchang[count - index - 1][2],
-                                  lang3: panchang[count - index - 1][3],
-                                  lang4: panchang[count - index - 1][4],
+                                  lastDate: DateTime.now(),
+                                  edit: true,
+                                  value: listOfPanchang[index],
                                 )));
                       },
                       child: PanchangTile(
-                        date: dates[count - index - 1],
-                        text: text,
+                        date: listOfPanchang[index]["date"],
+                        text: listOfPanchang[index]["panchang"],
                       ),
                     );
                   }),

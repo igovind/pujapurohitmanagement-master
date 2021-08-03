@@ -9,8 +9,10 @@ import 'package:pujapurohitmanagement/components/auth.dart';
 import 'package:pujapurohitmanagement/components/responsive.dart';
 import 'package:pujapurohitmanagement/components/services/database.dart';
 import 'package:pujapurohitmanagement/pages/manage/add_puja.dart';
+import 'package:pujapurohitmanagement/pages/manage/notice_board/notice_board_page.dart';
 import 'package:pujapurohitmanagement/pages/manage/panchang.dart';
 import 'package:pujapurohitmanagement/pages/manage/samagri_page.dart';
+import 'manage/puja/add_new_puja.dart';
 import 'overview.dart';
 import '../pages/manage/horoscope.dart';
 import '../pages/manage/date.dart';
@@ -328,10 +330,42 @@ class Management extends StatelessWidget {
                                         height: height * 0.15,
                                         width: width * 0.2,
                                         press: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AddAndEditPuja()));
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) => StreamBuilder<
+                                                    DocumentSnapshot>(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .doc(
+                                                        "inventories/listed_puja")
+                                                    .snapshots(),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.data == null) {
+                                                    return Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                                  }
+                                                  List<dynamic> pujaList =
+                                                      snapshot.data!
+                                                          .get("listed_puja");
+                                                  List<dynamic> samagriList =
+                                                      snapshot.data!.get(
+                                                          "listed_samagri");
+                                                  List<dynamic> types = snapshot
+                                                      .data!
+                                                      .get("types");
+                                                  pujaList.sort((a, b) =>
+                                                      (a["name"][0]).compareTo(
+                                                          b["name"][0]));
+
+                                                  return AddNewPuja(
+                                                      samagriList: samagriList,
+                                                      pujaList: pujaList,
+                                                      types: types);
+                                                  // return Master(listofPuja: pujaList,samList: samagriList,);
+                                                }),
+                                          ));
                                         },
                                         cl1: Colors.tealAccent,
                                         cl2: Colors.yellow,
@@ -342,6 +376,40 @@ class Management extends StatelessWidget {
                                 ),
                               ),
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30, left: 30),
+                            child: Box(
+                                height: height * 0.15,
+                                width: width * 0.2,
+                                press: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => StreamBuilder<
+                                              DocumentSnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .doc("inventories/tab_bar_icons")
+                                              .snapshots(),
+                                          builder: (context, snapshotS) {
+                                            if (snapshotS.data == null) {
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
+                                            final List<dynamic> list = snapshotS
+                                                .data!
+                                                .get("notice_board");
+                                            list.sort((a, b) => (b["date"])
+                                                .compareTo(a["date"]));
+                                            return NoticeBoard(
+                                                noticeList: list);
+                                          })));
+                                },
+                                cl1: Colors.tealAccent,
+                                cl2: Colors.teal[400]!,
+                                txt: 'Notice Board',
+                                content: 'Update',
+                                icn: Icons.calendar_today),
                           ),
                         ],
                       ),

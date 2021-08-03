@@ -20,14 +20,14 @@ class SamagriPage extends StatelessWidget {
                     priceList: {},
                     commission: "",
                     nonPurchasable: false,
-                    sid: "",
+                    sid: "", mainList: {},
                   )));
         },
       ),
       appBar: AppBar(),
       body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
-              .doc("inventories/listed_samagri")
+              .doc("inventories/listed_puja")
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.data == null) {
@@ -36,7 +36,11 @@ class SamagriPage extends StatelessWidget {
               );
             }
 
-            List<dynamic> list = snapshot.data!.get("samagri");
+            List<dynamic> list = snapshot.data!.get("listed_samagri");
+            list.sort((a, b) =>
+            (a["name"][0]).compareTo(
+            b["name"][0]));
+
             if (list.isEmpty) {
               return Center(child: Text("Kahli hai"));
             }
@@ -104,6 +108,7 @@ class SamagriPage extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => SamagriForm(
+                                  mainList: snapshot.data!.get("listed_samagri")[index],
                                       name: [
                                         nameE[index],
                                         nameH[index],

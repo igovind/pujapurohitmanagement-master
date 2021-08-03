@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'dart:ui';
+
 class PanchangTile extends StatelessWidget {
   final text;
   final date;
@@ -13,29 +13,30 @@ class PanchangTile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16),
       //  height: 200,
-     // height: 500,
+      // height: 500,
       width: 300,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.orange[100]),
       child: SingleChildScrollView(
         child: Container(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: functionmain(text),
+            Text(
+              text[0],
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
             ),
-            //    Divider(thickness: 1,color: Colors.black54,),
             SizedBox(
               height: 30,
             ),
             Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8), color: Colors.white),
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white),
                 child: Text(
                   "${dateTime.day}-${dateTime.month}-${dateTime.year}",
                   style: TextStyle(
@@ -245,10 +246,12 @@ class HexColor extends Color {
   }
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}class Language {
+}
+
+class Language {
   final String? language;
   final String? code;
-  final List<String>? text;
+  final List<dynamic>? text;
 
   Language({this.text, this.language, this.code});
 

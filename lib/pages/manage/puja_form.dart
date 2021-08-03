@@ -858,7 +858,7 @@ class _PujaFormState extends State<PujaForm> {
                                     name: ["", "", "", "", ""],
                                     image: "",
                                     priceList: {},
-                                    sid: "",
+                                    sid: "", mainList: {},
                                   ))),
                       child: Container(
                           color: Colors.green,
