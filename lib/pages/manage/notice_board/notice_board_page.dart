@@ -89,7 +89,7 @@ class NoticeBoard extends StatelessWidget {
                         title: Text("${noticeList[index]["title"][0]}"),
                         subtitle: Column(
                           children: [
-                            Text("${noticeList[index]["description"][0]}"),
+                            Text("${noticeList[index]["subtitle"][0]}"),
                             Text(
                               "${dateTime.year}/${dateTime.month}/${dateTime.day}--${dateTime.hour}:${dateTime.minute}",
                               style: TextStyle(color: Colors.blueAccent),

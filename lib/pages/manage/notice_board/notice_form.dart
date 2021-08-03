@@ -54,7 +54,7 @@ class _NoticeFormState extends State<NoticeForm> {
                       "notice_board": FieldValue.arrayUnion([
                         {
                           "title": [titleE, titleH, titleB, titleT, titleTL],
-                          "description": [
+                          "subtitle": [
                             descriptionE,
                             descriptionH,
                             descriptionB,
@@ -74,7 +74,7 @@ class _NoticeFormState extends State<NoticeForm> {
                       "notice_board": FieldValue.arrayUnion([
                         {
                           "title": [titleE, titleH, titleB, titleT, titleTL],
-                          "description": [
+                          "subtitle": [
                             descriptionE,
                             descriptionH,
                             descriptionB,
