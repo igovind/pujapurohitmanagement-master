@@ -901,7 +901,7 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
                                                 );
                                               })
                                       ),
-                                     /* NewSearchChoices.multiple(
+                                      NewSearchChoices.multiple(
                                         isExpanded: true,
                                         displayClearIcon: false,
                                         underline: SizedBox(),
@@ -935,7 +935,7 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
                                           Icons.add,
                                           color: Colors.red,
                                         ),
-                                      ),*/
+                                      ),
                                     ],
                                   ),
                                 )
