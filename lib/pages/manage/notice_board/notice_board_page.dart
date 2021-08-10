@@ -13,28 +13,21 @@ class NoticeBoard extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Text("Add"),
         onPressed: () {
-          showModalBottomSheet(
-            backgroundColor: Colors.transparent,
-            context: context,
-            builder: (context) {
-              return Container(
-                  height: MediaQuery.of(context).size.height * 0.9,
-                  child: StreamBuilder<DocumentSnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .doc("inventories/state")
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.data == null) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return NoticeForm(
-                          value: null,
-                        );
-                      }));
-            },
-          );
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .doc("inventories/state")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.data == null) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return NoticeForm(
+                      value: null,
+                    );
+                  })));
         },
       ),
       appBar: AppBar(),
@@ -55,29 +48,21 @@ class NoticeBoard extends StatelessWidget {
                           ]),
                       child: ListTile(
                         onTap: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) {
-                              return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.9,
-                                  child: StreamBuilder<DocumentSnapshot>(
-                                      stream: FirebaseFirestore.instance
-                                          .doc("inventories/state")
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.data == null) {
-                                          return Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        }
-                                        return NoticeForm(
-                                          value: noticeList[index],
-                                        );
-                                      }));
-                            },
-                          );
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => StreamBuilder<DocumentSnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .doc("inventories/state")
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data == null) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    return NoticeForm(
+                                      value: noticeList[index],
+                                    );
+                                  })));
                         },
                         leading: Text("${index + 1}  "),
                         trailing: noticeList[index]["important"]

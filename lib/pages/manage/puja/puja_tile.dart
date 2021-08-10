@@ -39,7 +39,8 @@ class PujaTile extends StatefulWidget {
       this.type,
       required this.types,
       required this.stateList,
-      required this.initialDetails, required this.index})
+      required this.initialDetails,
+      required this.index})
       : super(key: key);
 
   @override
@@ -52,6 +53,7 @@ class _PujaTileState extends State<PujaTile> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double height(double h) =>
@@ -81,8 +83,8 @@ class _PujaTileState extends State<PujaTile> {
                                     FirebaseFirestore.instance
                                         .doc("inventories/listed_puja")
                                         .update({
-                                      "listed_puja":
-                                          FieldValue.arrayRemove([widget.initialDetails])
+                                      "listed_puja": FieldValue.arrayRemove(
+                                          [widget.initialDetails])
                                     });
                                     Navigator.of(context).pop();
                                   },
@@ -102,7 +104,7 @@ class _PujaTileState extends State<PujaTile> {
           ),
           Align(
               alignment: Alignment.topLeft,
-              child: Text("Index ${widget.index +1}")),
+              child: Text("Index ${widget.index + 1}")),
           Image.network(
             widget.image,
             height: height(150),
@@ -180,21 +182,14 @@ class _PujaTileState extends State<PujaTile> {
             height: height(10),
           ),
           GestureDetector(
-            onTap: () => showModalBottomSheet(
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) {
-                return Container(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    child: PujaEditFormK(
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => PujaEditFormK(
                       samagriList: widget.mainSamagriList,
                       stateList: widget.stateList,
                       types: widget.types,
                       initialDetails: widget.initialDetails,
                       languageCode: "HIN",
-                    ));
-              },
-            ),
+                    ))),
             child: Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(

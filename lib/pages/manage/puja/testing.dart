@@ -6,19 +6,19 @@ class Testing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.doc("inventories/listed_puja").snapshots(),
+        stream: FirebaseFirestore.instance.doc("inventories/listed_samagri").snapshots(),
         builder: (context, snapshot) {
           if(snapshot.data==null){
             return CircularProgressIndicator();
           }
-          List<dynamic> list=snapshot.data!.get("listed_puja");
+          List<dynamic> list=snapshot.data!.get("samagri");
 
           return Center(
             child: TextButton(onPressed: () {
               for(int i=0;i<list.length;i++){
                 FirebaseFirestore.instance.doc("inventories/listed_puja").update(
                     {
-                      "listed_puja":FieldValue.arrayRemove(list[i]),
+                      "listed_samagri":FieldValue.arrayUnion(list),
                     }).whenComplete(() => {
 
                 });

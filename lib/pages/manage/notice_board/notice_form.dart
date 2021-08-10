@@ -18,6 +18,11 @@ class _NoticeFormState extends State<NoticeForm> {
   String? titleB;
   String? titleT;
   String? titleTL;
+  String? subtitleE;
+  String? subtitleH;
+  String? subtitleB;
+  String? subtitleT;
+  String? subtitleTL;
   String? descriptionE;
   String? descriptionH;
   String? descriptionB;
@@ -55,6 +60,13 @@ class _NoticeFormState extends State<NoticeForm> {
                         {
                           "title": [titleE, titleH, titleB, titleT, titleTL],
                           "subtitle": [
+                            subtitleE,
+                            subtitleH,
+                            subtitleB,
+                            subtitleT,
+                            subtitleTL
+                          ],
+                          "description": [
                             descriptionE,
                             descriptionH,
                             descriptionB,
@@ -75,6 +87,13 @@ class _NoticeFormState extends State<NoticeForm> {
                         {
                           "title": [titleE, titleH, titleB, titleT, titleTL],
                           "subtitle": [
+                            subtitleE,
+                            subtitleH,
+                            subtitleB,
+                            subtitleT,
+                            subtitleTL
+                          ],
+                          "description": [
                             descriptionE,
                             descriptionH,
                             descriptionB,
@@ -233,7 +252,7 @@ class _NoticeFormState extends State<NoticeForm> {
             SizedBox(
               height: 20,
             ),
-            Text("Description"),
+            Text("Subtitle-->Max 12 words"),
             Container(
               padding: EdgeInsets.all(20),
               // height: 200,
@@ -253,6 +272,140 @@ class _NoticeFormState extends State<NoticeForm> {
                     child: TextFormField(
                       validator: (value) =>
                           value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      initialValue: widget.value == null
+                          ? ""
+                          : widget.value["subtitle"][0],
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: "English",
+                        border: InputBorder.none,
+                      ),
+                      onSaved: (value) => subtitleE = value!,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black54, blurRadius: 3)
+                      ],
+                    ),
+                    child: TextFormField(
+                      validator: (value) =>
+                          value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      initialValue: widget.value == null
+                          ? ""
+                          : widget.value["subtitle"][1],
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: "Hindi",
+                        border: InputBorder.none,
+                      ),
+                      onSaved: (value) => subtitleH = value!,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black54, blurRadius: 3)
+                      ],
+                    ),
+                    child: TextFormField(
+                      validator: (value) =>
+                          value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      initialValue: widget.value == null
+                          ? ""
+                          : widget.value["subtitle"][2],
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: "Bengali",
+                        border: InputBorder.none,
+                      ),
+                      onSaved: (value) => subtitleB = value!,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black54, blurRadius: 3)
+                      ],
+                    ),
+                    child: TextFormField(
+                      validator: (value) =>
+                          value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      initialValue: widget.value == null
+                          ? ""
+                          : widget.value["subtitle"][3],
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: "Tamil",
+                        border: InputBorder.none,
+                      ),
+                      onSaved: (value) => subtitleT = value!,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black54, blurRadius: 3)
+                      ],
+                    ),
+                    child: TextFormField(
+                      validator: (value) =>
+                          value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      initialValue: widget.value == null
+                          ? ""
+                          : widget.value["subtitle"][4],
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: "Telugu",
+                        border: InputBorder.none,
+                      ),
+                      onSaved: (value) => subtitleTL = value!,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text("Description"),
+            Container(
+              padding: EdgeInsets.all(20),
+              // height: 200,
+              color: Colors.grey[100],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black54, blurRadius: 3)
+                      ],
+                    ),
+                    child: TextFormField(
+                      validator: (value) =>
+                      value!.isNotEmpty ? null : "Huh Fill this idiot",
                       initialValue: widget.value == null
                           ? ""
                           : widget.value["description"][0],
@@ -276,7 +429,7 @@ class _NoticeFormState extends State<NoticeForm> {
                     ),
                     child: TextFormField(
                       validator: (value) =>
-                          value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      value!.isNotEmpty ? null : "Huh Fill this idiot",
                       initialValue: widget.value == null
                           ? ""
                           : widget.value["description"][1],
@@ -300,7 +453,7 @@ class _NoticeFormState extends State<NoticeForm> {
                     ),
                     child: TextFormField(
                       validator: (value) =>
-                          value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      value!.isNotEmpty ? null : "Huh Fill this idiot",
                       initialValue: widget.value == null
                           ? ""
                           : widget.value["description"][2],
@@ -324,7 +477,7 @@ class _NoticeFormState extends State<NoticeForm> {
                     ),
                     child: TextFormField(
                       validator: (value) =>
-                          value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      value!.isNotEmpty ? null : "Huh Fill this idiot",
                       initialValue: widget.value == null
                           ? ""
                           : widget.value["description"][3],
@@ -348,7 +501,7 @@ class _NoticeFormState extends State<NoticeForm> {
                     ),
                     child: TextFormField(
                       validator: (value) =>
-                          value!.isNotEmpty ? null : "Huh Fill this idiot",
+                      value!.isNotEmpty ? null : "Huh Fill this idiot",
                       initialValue: widget.value == null
                           ? ""
                           : widget.value["description"][4],
@@ -371,7 +524,7 @@ class _NoticeFormState extends State<NoticeForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: 100,
+                      width:MediaQuery.of(context).size.width*0.4,
                       child: TextFormField(
                         validator: (value) =>
                             value!.isNotEmpty ? null : "Huh Fill this idiot",

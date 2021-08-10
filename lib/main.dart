@@ -75,7 +75,7 @@ class Controller extends StatelessWidget {
                 child: Provider<Database>(
                   create: (_) => FirestoreDatabase(uid: user.uid),
                   //child:AddAndEditPuja()//PujaForm()//SamagriPage()//SamagriForm()//
-                  child: StreamBuilder<DocumentSnapshot>(
+                 /* child: StreamBuilder<DocumentSnapshot>(
                       stream: FirebaseFirestore.instance
                           .doc("inventories/tab_bar_icons")
                           .snapshots(),
@@ -89,8 +89,8 @@ class Controller extends StatelessWidget {
                             snapshotS.data!.get("notice_board");
                         list.sort((a, b) => (b["date"]).compareTo(a["date"]));
                         return NoticeBoard(noticeList: list);
-                      }),
-                  // child: MainPage(uid:user.uid,users:user)
+                      }),*/
+                   child: MainPage(uid:user.uid,users:user)
                   //Dashboard(admin:user.uid,),
                 ));
           }

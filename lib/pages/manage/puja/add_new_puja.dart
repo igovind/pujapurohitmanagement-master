@@ -35,12 +35,8 @@ class AddNewPuja extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Text("Add"),
         onPressed: () {
-          showModalBottomSheet(
-            backgroundColor: Colors.transparent,
-            context: context,
-            builder: (context) {
-              return Container(
-                  height: MediaQuery.of(context).size.height * 0.9,
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => Container(
                   child: StreamBuilder<DocumentSnapshot>(
                       stream: FirebaseFirestore.instance
                           .doc("inventories/state")
@@ -57,9 +53,7 @@ class AddNewPuja extends StatelessWidget {
                           stateList: snapshot.data!.get("states"),
                           languageCode: "HIN",
                         );
-                      }));
-            },
-          );
+                      }))));
         },
       ),
       backgroundColor: Colors.blueAccent,

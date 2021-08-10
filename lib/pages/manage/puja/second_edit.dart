@@ -69,11 +69,13 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
       Map<dynamic, dynamic> newOpList = widget.initialDetails["samagri"];
       List<int> listD = [];
       for (int i = 0; i < newOpList[element]!.length; i++) {
-        listD.add(listT.indexOf(newOpList[element][i]["id"]));
-        newMap.addAll({
-          "${newOpList[element][i]["id"]}":
-          "${newOpList[element][i]["quantity"]}"
-        });
+        if(listT.contains(newOpList[element][i]["id"])){
+          listD.add(listT.indexOf(newOpList[element][i]["id"]));
+          newMap.addAll({
+            "${newOpList[element][i]["id"]}":
+            "${newOpList[element][i]["quantity"]}"
+          });
+        }
       }
 
       selectedSamagriIndex.addAll({"$element": listD});
@@ -135,6 +137,10 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
     });
     _image = widget.initialDetails["image"];
     _price = widget.initialDetails["type"];
+    for(int i=0;i<selectedSamagriIndex.length;i++){
+      print("${selectedSamagriIndex[0]}");
+    }
+    print("BSDK:: ${selectedSamagriIndex[0]}");
     // print(widget.samagriList);
     super.initState();
   }
@@ -868,6 +874,7 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
                                       SizedBox(
                                         height: height(10),
                                       ),
+                                      //TextButton(onPressed: ()=>print("${selectedSamagriIndex}"), child: Text("Fuck")),
                                       Container(
                                           height: height(450),
                                           child: ListView.separated(
@@ -875,9 +882,7 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
                                                   (context, index) => SizedBox(
                                                         height: height(5),
                                                       ),
-                                              itemCount: selectedSamagriIndex[
-                                                      widget.stateList[indexS]]!
-                                                  .length,
+                                              itemCount: selectedSamagriIndex[widget.stateList[indexS]]!.length,
                                               itemBuilder: (context, index) {
                                                 return Container(
                                                   color: Colors.grey[100],
@@ -894,8 +899,9 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
                                                     ],
                                                   ),
                                                 );
-                                              })),
-                                      NewSearchChoices.multiple(
+                                              })
+                                      ),
+                                     /* NewSearchChoices.multiple(
                                         isExpanded: true,
                                         displayClearIcon: false,
                                         underline: SizedBox(),
@@ -929,7 +935,7 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
                                           Icons.add,
                                           color: Colors.red,
                                         ),
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                                 )
