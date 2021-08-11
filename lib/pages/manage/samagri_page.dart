@@ -151,6 +151,8 @@ class _SamagriPageState extends State<SamagriPage> {
                 },
               ),
               appBar: AppBar(
+                centerTitle: true,
+                title: Text("Total Samagri ${list.length}"),
                 backgroundColor: Colors.white,
                 actions: [
                   TextButton(
@@ -160,7 +162,7 @@ class _SamagriPageState extends State<SamagriPage> {
                         });
                       },
                       child: Text(sidby ? "Search By name" : "Search by SID")),
-                  Text("Total ${list.length}"),
+
                   Container(
                     height: 50,
                     width: 50,
