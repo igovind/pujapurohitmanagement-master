@@ -919,8 +919,7 @@ class _PujaEditFormKState extends State<PujaEditFormK> {
                                                   .stateList[indexS]] = value;
                                             }
                                           });
-                                          print(
-                                              "B prak${selectedSamagriIndex}");
+
                                         },
                                         autofocus: false,
                                         selectedItems: selectedSamagriIndex[

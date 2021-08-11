@@ -65,30 +65,24 @@ class _SamagriFormState extends State<SamagriForm> {
       // print("$priceValue");
       if (widget.edit!) {
         FirebaseFirestore.instance.doc("inventories/listed_puja").update({
-          "listed_samagri": FieldValue.arrayRemove([
-            widget.mainList
+          "listed_samagri": FieldValue.arrayUnion([
+            {
+              "name": [_nameE, _nameH, _nameB, _nameT, _nameL],
+              "description": [
+                _descriptionE,
+                _descriptionH,
+                _descriptionB,
+                _descriptionT,
+                _descriptionL
+              ],
+              "sid": widget.sid,
+              "avg_price": _avgPrice,
+              "commission": _commission,
+              "image": _image,
+              "np": _nonPurchasable,
+              "price": widget.priceList,
+            }
           ])
-        }).whenComplete(() {
-          FirebaseFirestore.instance.doc("inventories/listed_puja").update({
-            "listed_samagri": FieldValue.arrayUnion([
-              {
-                "name": [_nameE, _nameH, _nameB, _nameT, _nameL],
-                "description": [
-                  _descriptionE,
-                  _descriptionH,
-                  _descriptionB,
-                  _descriptionT,
-                  _descriptionL
-                ],
-                "sid": widget.sid,
-                "avg_price": _avgPrice,
-                "commission": _commission,
-                "image": _image,
-                "np": _nonPurchasable,
-                "price": widget.priceList,
-              }
-            ])
-          });
         }).whenComplete(() => Navigator.of(context).pop());
       } else {
         FirebaseFirestore.instance.doc("inventories/listed_puja").update({
@@ -140,41 +134,6 @@ class _SamagriFormState extends State<SamagriForm> {
                   color: Colors.green,
                   child: Column(
                     children: [
-                      !widget.edit!
-                          ? SizedBox()
-                          : TextButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          title: Text("Pakka? Kardu delete??"),
-                                          actions: [
-                                            TextButton(
-                                              child: Text("Karde"),
-                                              onPressed: () {
-                                                FirebaseFirestore.instance
-                                                    .doc(
-                                                        "inventories/listed_puja")
-                                                    .update({
-                                                  "listed_samagri":
-                                                      FieldValue.arrayRemove(
-                                                          [widget.mainList])
-                                                }).whenComplete(() =>
-                                                        Navigator.of(context)
-                                                            .pop());
-                                              },
-                                            )
-                                          ],
-                                        ));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(14),
-                                color: Colors.redAccent,
-                                child: Text(
-                                  "Delete",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )),
                       SizedBox(
                         height: 50,
                       ),
