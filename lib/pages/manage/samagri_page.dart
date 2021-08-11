@@ -72,49 +72,60 @@ class _SamagriPageState extends State<SamagriPage> {
             sId.add(list[i]["sid"]);
             np.add(list[i]["np"]);
             samagriItems.add(DropdownMenuItem(
-              child: ListTile(
-                title: Text("${list[i]["name"][0]}"),
-                subtitle: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${list[i]["sid"]}",
-                      style: TextStyle(
-                          color: Colors.deepOrangeAccent,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text("${list[i]["description"][0]}")
-                  ],
+              child: Container(
+                padding: EdgeInsets.all(8),
+                margin: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black54, blurRadius: 5)
+                    ]),
+                child: ListTile(
+                  title: Text("${list[i]["name"][0]}"),
+                 trailing: Text("${i + 1}"),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${list[i]["sid"]}",
+                        style: TextStyle(
+                            color: Colors.deepOrangeAccent,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text("${list[i]["description"][0]}")
+                    ],
+                  ),
+                  leading: Image.network("${list[i]["image"]}"),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SamagriForm(
+                              mainList: snapshot.data!.get("listed_samagri")[i],
+                              name: [
+                                list[i]["name"][0],
+                                list[i]["name"][1],
+                                list[i]["name"][2],
+                                list[i]["name"][3],
+                                list[i]["name"][4],
+                              ],
+                              nonPurchasable: list[i]["np"],
+                              description: [
+                                list[i]["description"][0],
+                                list[i]["description"][1],
+                                list[i]["description"][2],
+                                list[i]["description"][3],
+                                list[i]["description"][4],
+                              ],
+                              commission: list[i]["commission"],
+                              avgPrice: list[i]["avg_price"],
+                              edit: true,
+                              image: list[i]["image"],
+                              priceList: priceList,
+                              sid: list[i]["sid"],
+                            )));
+                  },
                 ),
-                leading: Image.network("${list[i]["image"]}"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SamagriForm(
-                            mainList: snapshot.data!.get("listed_samagri")[i],
-                            name: [
-                              list[i]["name"][0],
-                              list[i]["name"][1],
-                              list[i]["name"][2],
-                              list[i]["name"][3],
-                              list[i]["name"][4],
-                            ],
-                            nonPurchasable: list[i]["np"],
-                            description: [
-                              list[i]["description"][0],
-                              list[i]["description"][1],
-                              list[i]["description"][2],
-                              list[i]["description"][3],
-                              list[i]["description"][4],
-                            ],
-                            commission: list[i]["commission"],
-                            avgPrice: list[i]["avg_price"],
-                            edit: true,
-                            image: list[i]["image"],
-                            priceList: priceList,
-                            sid: list[i]["sid"],
-                          )));
-                },
               ),
               value: sidby ? list[i]["sid"] : list[i]["name"][0],
             ));
@@ -170,19 +181,22 @@ class _SamagriPageState extends State<SamagriPage> {
                   ),
                 ],
               ),
-              backgroundColor: Colors.blueAccent,
+              backgroundColor: Colors.blueAccent[100],
               body: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: ListView.separated(
                     itemBuilder: (context, index) => Container(
                           padding: EdgeInsets.all(8),
+                          margin: EdgeInsets.symmetric(vertical: 5,horizontal: 15),
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(color: Colors.black54, blurRadius: 5)
                               ]),
                           child: ListTile(
                             title: Text("${nameE[index]}"),
+                            trailing: Text("${index + 1}"),
                             subtitle: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +208,7 @@ class _SamagriPageState extends State<SamagriPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text("${descriptionE[index]}"),
-                                Text("${index + 1}")
+
                               ],
                             ),
                             leading: Image.network("${image[index]}"),
