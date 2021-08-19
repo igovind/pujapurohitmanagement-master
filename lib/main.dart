@@ -15,6 +15,8 @@ import 'package:pujapurohitmanagement/pages/manage/notice_board/notice_board_pag
 import 'package:pujapurohitmanagement/pages/manage/panchang.dart';
 import 'package:pujapurohitmanagement/pages/manage/puja/add_new_puja.dart';
 import 'package:pujapurohitmanagement/pages/manage/puja/master.dart';
+import 'package:pujapurohitmanagement/pages/manage/puja/testing.dart';
+import 'package:pujapurohitmanagement/pages/manage/samagri_page.dart';
 import 'package:pujapurohitmanagement/pages/sales/Request.dart';
 import 'components/auth.dart';
 import 'components/services/database.dart';
@@ -74,10 +76,11 @@ class Controller extends StatelessWidget {
                 value: user,
                 child: Provider<Database>(
                   create: (_) => FirestoreDatabase(uid: user.uid),
+                  //child: Testing(),
                   //child:AddAndEditPuja()//PujaForm()//SamagriPage()//SamagriForm()//
-                 /* child: StreamBuilder<DocumentSnapshot>(
+                  /*child: StreamBuilder<DocumentSnapshot>(
                       stream: FirebaseFirestore.instance
-                          .doc("inventories/tab_bar_icons")
+                          .doc("inventories/listed_puja")
                           .snapshots(),
                       builder: (context, snapshotS) {
                         if (snapshotS.data == null) {
@@ -86,11 +89,18 @@ class Controller extends StatelessWidget {
                           );
                         }
                         final List<dynamic> list =
-                            snapshotS.data!.get("notice_board");
-                        list.sort((a, b) => (b["date"]).compareTo(a["date"]));
-                        return NoticeBoard(noticeList: list);
+                            snapshotS.data!.get("listed_puja");
+                        final List<dynamic> lists =
+                            snapshotS.data!.get("listed_samagri");
+                        list.sort((a, b) => (b["pjid"]).compareTo(a["pjid"]));
+                        lists.sort((a, b) => (b["sid"]).compareTo(a["sid"]));
+                        return Master(
+                          samList: lists,
+                          listofPuja: list,
+                        );
                       }),*/
-                   child: MainPage(uid:user.uid,users:user)
+                 // child: SamagriPage(),
+                  child: MainPage(uid:user.uid,users:user)
                   //Dashboard(admin:user.uid,),
                 ));
           }

@@ -74,7 +74,7 @@ class _SamagriPageState extends State<SamagriPage> {
             samagriItems.add(DropdownMenuItem(
               child: Container(
                 padding: EdgeInsets.all(8),
-                margin: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
+                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white,
@@ -83,7 +83,47 @@ class _SamagriPageState extends State<SamagriPage> {
                     ]),
                 child: ListTile(
                   title: Text("${list[i]["name"][0]}"),
-                 trailing: Text("${i + 1}"),
+                  trailing: Container(
+                    width: 150,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("${i + 1}"),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        content: Text("Are you sure??"),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  FirebaseFirestore.instance
+                                                      .doc(
+                                                          "inventories/listed_puja")
+                                                      .update({
+                                                    "listed_samagri":
+                                                        FieldValue.arrayRemove(
+                                                            [list[i]])
+                                                  });
+                                                });
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("Yes")),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("No"))
+                                        ],
+                                      ));
+                            },
+                            icon: Icon(Icons.delete))
+                      ],
+                    ),
+                  ),
                   subtitle: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +202,6 @@ class _SamagriPageState extends State<SamagriPage> {
                         });
                       },
                       child: Text(sidby ? "Search By name" : "Search by SID")),
-
                   Container(
                     height: 50,
                     width: 50,
@@ -173,7 +212,7 @@ class _SamagriPageState extends State<SamagriPage> {
                       onChanged: (value) {
                         setState(() {});
                       },
-                      autofocus: false,
+                      autofocus: true,
                       items: samagriItems,
                       icon: Icon(
                         Icons.search,
@@ -189,16 +228,65 @@ class _SamagriPageState extends State<SamagriPage> {
                 child: ListView.separated(
                     itemBuilder: (context, index) => Container(
                           padding: EdgeInsets.all(8),
-                          margin: EdgeInsets.symmetric(vertical: 5,horizontal: 15),
+                          margin:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(15),
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(color: Colors.black54, blurRadius: 5)
                               ]),
                           child: ListTile(
                             title: Text("${nameE[index]}"),
-                            trailing: Text("${index + 1}"),
+                            trailing: Container(
+                              width: 150,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("${index + 1}"),
+                                  IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => AlertDialog(
+                                                  content:
+                                                      Text("Are you sure??"),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .doc(
+                                                                    "inventories/listed_puja")
+                                                                .update({
+                                                              "listed_samagri":
+                                                                  FieldValue
+                                                                      .arrayRemove([
+                                                                list[index]
+                                                              ])
+                                                            });
+                                                          });
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text("Yes")),
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text("No"))
+                                                  ],
+                                                ));
+                                      },
+                                      icon: Icon(Icons.delete))
+                                ],
+                              ),
+                            ),
                             subtitle: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +298,6 @@ class _SamagriPageState extends State<SamagriPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text("${descriptionE[index]}"),
-
                               ],
                             ),
                             leading: Image.network("${image[index]}"),

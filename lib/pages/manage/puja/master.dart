@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pujapurohitmanagement/pages/manage/panchang_tile.dart';
 import 'package:pujapurohitmanagement/pages/manage/puja/puja_class.dart';
 
 class Master extends StatelessWidget {
@@ -34,7 +35,8 @@ class Master extends StatelessWidget {
                 height: 500,
                 child: ListView.builder(
                   itemCount: snapshot.data!.size,
-                  itemBuilder: (context, indexP) {print("$indexP ${snapshot.data!.docs[indexP].id}");
+                  itemBuilder: (context, indexP) {
+                    print("$indexP ${snapshot.data!.docs[indexP].id}");
                     return StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection(
@@ -46,107 +48,157 @@ class Master extends StatelessWidget {
                               child: CircularProgressIndicator(),
                             );
                           }
-                          return Center(
-                            child: TextButton(
-                              child: Text("${indexP+1} Press ----> ${snapshot.data!.docs[indexP].id}"),
-                              onPressed: () {
-                                print("||||||||||||||||||||||||||||_______________>>>>${indexP +1}");
-                                for (int i = 0; i < snapshotT.data!.size; i++) {
-
-
-                                  if (keyword.contains(
-                                      snapshotT.data!.docs[i].get("keyword"))) {
-                                    int index = keyword.indexOf(
-                                        snapshotT.data!.docs[i].get("keyword"));
-                                    String uid =
-                                        snapshot.data!.docs[indexP].id; //snapshot.data!.docs[index].id;
-                                    ////SAMAGRI SOLUTION//
-                                    dynamic samagrilistofpuja =
-                                        listofPuja[index]["samagri"]["Delhi"];
-                                    //////////////////////
-                                    //
-                                    //print("||||||||||||||||||||||||||||_______________<<<<<<<$index");
-                                    FirebaseFirestore.instance
-                                        .doc(
-                                            "punditUsers/$uid/puja_offering/${snapshotT.data!.docs[i].id}")
-                                        .set({
-                                      'puja': listofPuja[index]["name"][1],
-                                      'price':
-                                          snapshotT.data!.docs[i].get("price"),
-                                      'Benefit':
-                                          snapshotT.data!.docs[i].get("Benefit"),
-                                      'swastik':
-                                          snapshotT.data!.docs[i].get("swastik"),
-                                      'PanditD': listofPuja[index]["description"]
-                                          [1],
-                                      'Pujan Samagri': "",
-                                      'samagri1': ["", "", "", "", ""],
-                                      'samagri2': samagrilistofpuja,
-                                      'pjid': listofPuja[index]["pjid"],
-                                      'time': snapshotT.data!.docs[i].get("time"),
-                                      'keyword':
-                                          snapshotT.data!.docs[i].get("keyword"),
-                                      'subscriber': snapshotT.data!.docs[i]
-                                          .get("subscriber"),
-                                      'profit':
-                                          snapshotT.data!.docs[i].get("profit"),
-                                      'serviceId': snapshotT.data!.docs[i]
-                                          .get("serviceId"),
-                                      'rates':
-                                          snapshotT.data!.docs[i].get('rates'),
-                                      'np': snapshotT.data!.docs[i].get("price") +
-                                          300,
-                                      'reviews': 0,
-                                      'image': listofPuja[index]["image"],
-                                      'type': snapshot.data!.docs[i].get("type"),
-                                      'offer':
-                                          snapshotT.data!.docs[i].get("offer")
-                                    }).whenComplete(() {
-                                      FirebaseFirestore.instance
-                                          .doc(
-                                              "Avaliable_pundit/$uid/puja_offering/${snapshotT.data!.docs[i].id}")
-                                          .set({
-                                        'puja': listofPuja[index]["name"][1],
-                                        'price':
-                                            snapshotT.data!.docs[i].get("price"),
-                                        'Benefit': snapshotT.data!.docs[i]
-                                            .get("Benefit"),
-                                        'swastik': snapshotT.data!.docs[i]
-                                            .get("swastik"),
-                                        'PanditD': listofPuja[index]
-                                            ["description"][1],
-                                        'Pujan Samagri': "",
-                                        'samagri1': ["", "", "", "", ""],
-                                        'samagri2': samagrilistofpuja,
-                                        'pjid': listofPuja[index]["pjid"],
-                                        'time':
-                                            snapshotT.data!.docs[i].get("time"),
-                                        'keyword': snapshotT.data!.docs[i]
-                                            .get("keyword"),
-                                        'subscriber': snapshotT.data!.docs[i]
-                                            .get("subscriber"),
-                                        'profit':
-                                            snapshotT.data!.docs[i].get("profit"),
-                                        'serviceId': snapshotT.data!.docs[i]
-                                            .get("serviceId"),
-                                        'rates':
-                                            snapshotT.data!.docs[i].get('rates'),
-                                        'np':
-                                            snapshotT.data!.docs[i].get("price") +
-                                                300,
-                                        'reviews': 0,
-                                        'image': listofPuja[index]["image"],
-                                        'type':
-                                            snapshotT.data!.docs[i].get("type"),
-                                        'offer':
-                                            snapshotT.data!.docs[i].get("offer")
-                                      });
-                                    });
-                                  } else {}
+                          return StreamBuilder<DocumentSnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .doc(
+                                      "punditUsers/${snapshot.data!.docs[indexP].id}/user_profile/user_data")
+                                  .snapshots(),
+                              builder: (context, snapshotK) {
+                                if (snapshotK.data == null) {
+                                  return Text("Loading user data");
                                 }
-                              },
-                            ),
-                          );
+                                return Center(
+                                  child: TextButton(
+                                    child: Text(
+                                        "${indexP + 1} Press ----> ${snapshot.data!.docs[indexP].id}"),
+                                    onPressed: () {
+                                      print(
+                                          "||||||||||||||||||||||||||||_______________>>>>${indexP + 1}");
+                                      for (int i = 0;
+                                          i < snapshotT.data!.size;
+                                          i++) {
+                                        if (keyword.contains(snapshotT
+                                            .data!.docs[i]
+                                            .get("keyword"))) {
+                                          int index = keyword.indexOf(snapshotT
+                                              .data!.docs[i]
+                                              .get("keyword"));
+                                          String uid = snapshot
+                                              .data!
+                                              .docs[indexP]
+                                              .id; //snapshot.data!.docs[index].id;
+                                          ////SAMAGRI SOLUTION//
+                                          dynamic samagrilistofpuja =
+                                              listofPuja[index]["samagri"]
+                                                  ["Delhi"];
+                                          //////////////////////
+                                          //
+                                          //print("||||||||||||||||||||||||||||_______________<<<<<<<$index");
+                                          FirebaseFirestore.instance
+                                              .doc(
+                                                  "punditUsers/$uid/puja_offering/${snapshotT.data!.docs[i].id}")
+                                              .set({
+                                            'puja': Language(
+                                                text: listofPuja[index]["name"],
+                                                code: snapshotK
+                                                    .data!["langCode"]).getText,
+                                            'price': snapshotT.data!.docs[i]
+                                                .get("price"),
+                                            'Benefit': snapshotT.data!.docs[i]
+                                                .get("Benefit"),
+                                            'swastik': snapshotT.data!.docs[i]
+                                                .get("swastik"),
+                                            'PanditD': Language(
+                                                text: listofPuja[index]
+                                                    ["description"],
+                                                code: snapshotK
+                                                    .data!["langCode"]).getText,
+                                            'Pujan Samagri': "",
+                                            'samagri1': ["", "", "", "", ""],
+                                            'samagri2': samagrilistofpuja,
+                                            'pjid': listofPuja[index]["pjid"],
+                                            'time': snapshotT.data!.docs[i]
+                                                .get("time"),
+                                            'keyword': snapshotT.data!.docs[i]
+                                                .get("keyword"),
+                                            'subscriber': snapshotT
+                                                .data!.docs[i]
+                                                .get("subscriber"),
+                                            'profit': snapshotT.data!.docs[i]
+                                                .get("profit"),
+                                            'serviceId': snapshotT.data!.docs[i]
+                                                .get("serviceId"),
+                                            'rates': snapshotT.data!.docs[i]
+                                                .get('rates'),
+                                            'np': snapshotT.data!.docs[i]
+                                                    .get("price") +
+                                                300,
+                                            'reviews': 0,
+                                            'image': listofPuja[index]["image"],
+                                            'type': snapshot.data!.docs[i]
+                                                .get("type"),
+                                            'offer': snapshotT.data!.docs[i]
+                                                .get("offer")
+                                          }).whenComplete(() {
+                                            FirebaseFirestore.instance
+                                                .doc(
+                                                    "Avaliable_pundit/$uid/puja_offering/${snapshotT.data!.docs[i].id}")
+                                                .set({
+                                              'puja': Language(
+                                                  text: listofPuja[index]
+                                                      ["name"],
+                                                  code: snapshotK
+                                                      .data!["langCode"]).getText,
+                                              'price': snapshotT.data!.docs[i]
+                                                  .get("price"),
+                                              'Benefit': snapshotT.data!.docs[i]
+                                                  .get("Benefit"),
+                                              'swastik': snapshotT.data!.docs[i]
+                                                  .get("swastik"),
+                                              'PanditD': Language(
+                                                  text: listofPuja[index]
+                                                      ["description"],
+                                                  code: snapshotK
+                                                      .data!["langCode"]).getText,
+                                              'Pujan Samagri': "",
+                                              'samagri1': ["", "", "", "", ""],
+                                              'samagri2': samagrilistofpuja,
+                                              'pjid': listofPuja[index]["pjid"],
+                                              'time': snapshotT.data!.docs[i]
+                                                  .get("time"),
+                                              'keyword': snapshotT.data!.docs[i]
+                                                  .get("keyword"),
+                                              'subscriber': snapshotT
+                                                  .data!.docs[i]
+                                                  .get("subscriber"),
+                                              'profit': snapshotT.data!.docs[i]
+                                                  .get("profit"),
+                                              'serviceId': snapshotT
+                                                  .data!.docs[i]
+                                                  .get("serviceId"),
+                                              'rates': snapshotT.data!.docs[i]
+                                                  .get('rates'),
+                                              'np': snapshotT.data!.docs[i]
+                                                      .get("price") +
+                                                  300,
+                                              'reviews': 0,
+                                              'image': listofPuja[index]
+                                                  ["image"],
+                                              'type': snapshotT.data!.docs[i]
+                                                  .get("type"),
+                                              'offer': snapshotT.data!.docs[i]
+                                                  .get("offer")
+                                            });
+                                          });
+                                          print("[UPDATE INSTRUCTION EXECUTED]");
+                                        } else {
+                                          String uid =
+                                              snapshot.data!.docs[indexP].id;
+                                          FirebaseFirestore.instance
+                                              .doc(
+                                                  "punditUsers/$uid/puja_offering/${snapshotT.data!.docs[i].id}")
+                                              .delete();
+                                          FirebaseFirestore.instance
+                                              .doc(
+                                                  "Avaliable_pundit/$uid/puja_offering/${snapshotT.data!.docs[i].id}")
+                                              .delete();
+                                          print("[DELETE INSTRUCTION EXECUTED]");
+                                        }
+                                      }
+                                    },
+                                  ),
+                                );
+                              });
                         });
                   },
                 ),
