@@ -5,6 +5,12 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:pujapurohitmanagement/Controllers/FirebaseController.dart';
 import 'package:pujapurohitmanagement/components/light_colors.dart';
+import 'package:pujapurohitmanagement/extra_folder/all_prohit_profiles.dart';
+import 'package:pujapurohitmanagement/extra_folder/db_management.dart';
+import 'package:pujapurohitmanagement/extra_folder/purohit_services_promlem_resolve.dart';
+import 'package:pujapurohitmanagement/purohit_profile_mgmt/purohit_basic_details_form.dart';
+import 'package:pujapurohitmanagement/extra_folder/pandit_users_transfer.dart';
+import 'package:pujapurohitmanagement/extra_folder/puja_ceremony_transfer.dart';
 import 'package:pujapurohitmanagement/pages/MainPage.dart';
 import 'package:pujapurohitmanagement/pages/Temporay.dart';
 import 'package:pujapurohitmanagement/pages/dashboard/PanditDetail.dart';
@@ -18,8 +24,10 @@ import 'package:pujapurohitmanagement/pages/manage/puja/master.dart';
 import 'package:pujapurohitmanagement/pages/manage/puja/testing.dart';
 import 'package:pujapurohitmanagement/pages/manage/samagri_page.dart';
 import 'package:pujapurohitmanagement/pages/sales/Request.dart';
+import 'package:pujapurohitmanagement/purohit_profile_mgmt/purohit_profile_landing_page.dart';
 import 'components/auth.dart';
 import 'components/services/database.dart';
+import 'extra_folder/purohit_puja_transfer.dart';
 import 'pages/manage/date.dart';
 
 void main() async {
@@ -99,9 +107,26 @@ class Controller extends StatelessWidget {
                           listofPuja: list,
                         );
                       }),*/
-                 // child: SamagriPage(),
-                  child: MainPage(uid:user.uid,users:user)
+                  // child: SamagriPage(),
+                  //--> child: MainPage(uid:user.uid,users:user)
                   //Dashboard(admin:user.uid,),
+                  child:AllProhit(),
+                  //child: PurohitPujaTransfer(),
+                  /*PanditProfileList(
+                    panditDisplayProfile:
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH-IThiMFnYhmcGPJjUlCyDP-M2HUeW5mIwQ&usqp=CAU",
+                    panditName: "Pt. Aditya Nath",
+                    panditAge: "56",
+                    panditMobileNumber: "9899721479",
+                    panditState: "Delhi",
+                    panditCity: "Budh Vihar",
+                    panditExperience: "8",
+                    panditCoverProfile: "https://cdn.wionews.com/sites/default/files/styles/photo_page/public/2018/09/12/29808-000_sr8ux-20170929080030.jpg",
+                    panditQualification:
+                        "Bachelor’s Degree and General B.Ed degree with a two-year Diploma in Special Education recognised by the Rehabilitation Council of India (RCI). (or)",
+                    panditBio:
+                        "Yogi Adityanath is an Indian Hindu monk and politician serving as the 22nd and current Chief Minister of Uttar Pradesh, in office since 19 March 2017. ",
+                  ),*/
                 ));
           }
         }

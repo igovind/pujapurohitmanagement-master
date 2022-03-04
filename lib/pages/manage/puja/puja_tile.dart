@@ -48,11 +48,6 @@ class PujaTile extends StatefulWidget {
 }
 
 class _PujaTileState extends State<PujaTile> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
